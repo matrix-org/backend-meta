@@ -1,0 +1,41 @@
+name: Linting
+on:
+  workflow_call:
+
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+
+    name: Style checks
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Poetry
+        uses: matrix-org/setup-python-poetry@v1
+
+      - name: Import ordering
+        run: poetry run isort --check --diff .
+
+      - name: Code style
+        run: poetry run black --check .
+
+      - name: Semantic checks
+        run: poetry run flake8
+
+  mypy:
+    runs-on: ubuntu-latest
+    name: Typechecking
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Poetry
+        uses: matrix-org/setup-python-poetry@v1
+
+      - name: Restore/persist mypy's cache
+        uses: AustinScola/mypy-cache-github-action@v1
+
+      - name: Run mypy
+        run: poetry run mypy
