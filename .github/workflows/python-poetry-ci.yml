@@ -15,13 +15,13 @@ jobs:
       - name: Setup Poetry
         uses: matrix-org/setup-python-poetry@v1
 
-      - name: Import ordering
+      - name: Import order (isort)
         run: poetry run isort --check --diff .
 
-      - name: Code style
+      - name: Code style (black)
         run: poetry run black --check .
 
-      - name: Semantic checks
+      - name: Semantic checks (flake8)
         run: poetry run flake8
 
   mypy:
