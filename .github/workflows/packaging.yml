@@ -23,7 +23,8 @@ jobs:
       - name: Build wheel and sdist
         run: python -m build
 
-      # This checks whether your distribution’s long description will render correctly on PyPI.
+      # This checks that the "long description" fields renders correctly on PyPI.
+      # We don't upload to PyPI, but the two steps below only upload artifacts to GitHub.
       - name: Run twine check
         run: python -m twine check dist/*
 
