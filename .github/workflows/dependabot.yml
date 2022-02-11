@@ -1,0 +1,54 @@
+# Add a changelog for dependabot pull requests. Based on:
+# https://github.com/dependabot/dependabot-core/issues/2635#issuecomment-707718571
+
+# NB. This runs with write permissions to the target repository, so we need to ensure
+# that we trust all actions and programs run here. See also
+#     https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+
+
+name: Dependabot
+on:
+  workflow_call:
+    inputs:
+      pull-request-number:
+        required: true
+        type: number
+      head-sha:
+        required: true
+        type: string
+      head-ref:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  add-dependabot-changelog:
+    name: Add entry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Configure git
+        run: |
+          git config --local user.email "$(git log --pretty='%ae' -1)"
+          git config --local user.name "Dependabot[bot]"
+          git checkout ${{ inputs.head-ref }}
+      - name: Write changelog entry
+        run: |
+          commit_message=$(git show -s --format=%B ${{ inputs.head-sha }} | head -1)
+          echo "Dependabot: $commit_message."> changelog.d/${{ inputs.pull-request-number }}.misc
+      - name: Commit
+        # Quoting from the linked comment at the top of this file:
+        # > Handy tip is to include [dependabot skip] in the commit message, so Dependabot
+        # > will still rebase the PR and not complain that it has been edited. The action
+        # > will run again after Dependabot force pushes to the branch.
+        run: |
+          git add .changelog.d/${{ inputs.pull-request-number }}.misc
+          git commit -m "[dependabot skip] Add changelog entry"
+      - name: Push changes back to branch
+        run: |
+          git push origin ${{ inputs.head-ref }}
