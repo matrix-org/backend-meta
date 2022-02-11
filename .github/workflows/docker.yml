@@ -10,7 +10,9 @@ on:
         required: false
         default: linux/amd64,linux/arm64
       image-name:
-        description: "What to call the docker image. This is the FOO in 'matrixdotorg/FOO:tagname'"
+        description: >
+          What to call the docker image. Does not include a tag name. You need to 
+          include the 'matrixdotorg/' prefix.
         type: string
         required: true
       dockerfile:
@@ -81,6 +83,6 @@ jobs:
         with:
           push: ${{ inputs.publish }}
           labels: "gitsha1=${{ github.sha }}"
-          tags: "matrixdotorg/${{ inputs.image-name }}:${{ steps.set-tag.outputs.tag }}"
+          tags: "${{ inputs.image-name }}:${{ steps.set-tag.outputs.tag }}"
           file: ${{ inputs.dockerfile }}
           platforms: ${{ inputs.platforms }}
