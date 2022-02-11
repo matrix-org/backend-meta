@@ -2,11 +2,13 @@ name: Build and publish docker images
 on:
   workflow_call:
     inputs:
-      arm64:
-        description: If set to true, build an image for arm64 as well as amd64.
-        type: boolean
+      platforms:
+        description: > 
+          Specify which platforms to build an image for. Forwarded to 
+          docker/build-push-action@v2.
+        type: string
         required: false
-        default: false
+        default: linux/amd64,linux/arm64
       image-name:
         description: "What to call the docker image. This is the FOO in 'matrixdotorg/FOO:tagname'"
         type: string
@@ -35,8 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
-        if: ${{ inputs.arm64 }}
-        id: qemu
+        if: contains(inputs.platform, 'linux/arm64')
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
@@ -75,21 +76,11 @@ jobs:
           esac
           echo "::set-output name=tag::$tag"
 
-      - name: Build and push amd64
+      - name: Build and push images
         uses: docker/build-push-action@v2
         with:
           push: ${{ inputs.publish }}
           labels: "gitsha1=${{ github.sha }}"
           tags: "matrixdotorg/${{ inputs.image-name }}:${{ steps.set-tag.outputs.tag }}"
           file: ${{ inputs.dockerfile }}
-          platforms: linux/amd64
-
-      - name: Build and push arm64
-        if: ${{ inputs.arm64 }}
-        uses: docker/build-push-action@v2
-        with:
-          push: ${{ inputs.publish }}
-          labels: "gitsha1=${{ github.sha }}"
-          tags: "matrixdotorg/${{ inputs.image-name }}:${{ steps.set-tag.outputs.tag }}"
-          file: ${{ inputs.dockerfile }}
-          platforms: linux/arm64
+          platforms: ${{ inputs.platforms }}
