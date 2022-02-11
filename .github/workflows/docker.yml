@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
-        if: contains(inputs.platform, 'linux/arm64')
+        if: contains(inputs.platforms, 'linux/arm64')
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
