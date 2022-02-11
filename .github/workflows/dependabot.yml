@@ -47,7 +47,7 @@ jobs:
         # > will still rebase the PR and not complain that it has been edited. The action
         # > will run again after Dependabot force pushes to the branch.
         run: |
-          git add .changelog.d/${{ inputs.pull-request-number }}.misc
+          git add changelog.d/${{ inputs.pull-request-number }}.misc
           git commit -m "[dependabot skip] Add changelog entry"
       - name: Push changes back to branch
         run: |
