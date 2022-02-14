@@ -26,9 +26,9 @@ on:
         required: false
         default: false
     secrets:
-      DOCKERHUB_USERNAME:
+      DOCKER_HUB_USERNAME:
         required: true
-      DOCKERHUB_TOKEN:
+      DOCKER_HUB_TOKEN:
         required: true
 
 permissions:
