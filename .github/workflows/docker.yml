@@ -2,13 +2,6 @@ name: Build and publish docker images
 on:
   workflow_call:
     inputs:
-      platforms:
-        description: > 
-          Specify which platforms to build an image for. Forwarded to 
-          docker/build-push-action@v2.
-        type: string
-        required: false
-        default: linux/amd64,linux/arm64
       image-name:
         description: >
           What to call the docker image. Does not include a tag name. You need to 
@@ -39,7 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
-        if: inputs.platforms != 'linux/amd64'
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
@@ -85,4 +77,4 @@ jobs:
           labels: "gitsha1=${{ github.sha }}"
           tags: "${{ inputs.image-name }}:${{ steps.set-tag.outputs.tag }}"
           file: ${{ inputs.dockerfile }}
-          platforms: ${{ inputs.platforms }}
+          platforms: linux/amd64,linux/arm64
