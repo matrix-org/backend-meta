@@ -1,6 +1,25 @@
 name: Linting
 on:
   workflow_call:
+    inputs:
+      lint-targets:
+        description: |
+          Space-separated list of targets to pass to isort, black, and flake8.
+          If possible, try to avoid using this; prefer to configure the tools so that
+          they can run with only `.` as an argument. The simplest way to do that is to
+          have all python files end in .py. However:
+          isort has `git_ignore` and `extend_skip` config options for excluding files.
+            It cannot be configured to search additional files except on its command
+            line. However, its default detection is pretty good (it will scan files'
+            first lines for shebangs); `isort --show-files .` is useful for debugging.
+          - flake8 has a `filename` config option to include files and `extend-exclude`
+            for excluding them. I think `filename` only matches the basename of the
+            file, not its absolute path.
+          - black ignores `.gitignore`d files by default, and has configuration options 
+            for excluding and including specific files (--extend-exclude and --include).
+        type: string
+        required: false
+        default: "."
 
 
 jobs:
@@ -16,13 +35,13 @@ jobs:
         uses: matrix-org/setup-python-poetry@v1
 
       - name: Import order (isort)
-        run: poetry run isort --check --diff .
+        run: poetry run isort --check --diff ${{ inputs.lint-targets }}
 
       - name: Code style (black)
-        run: poetry run black --check .
+        run: poetry run black --check ${{ inputs.lint-targets }}
 
       - name: Semantic checks (flake8)
-        run: poetry run flake8
+        run: poetry run flake8 ${{ inputs.lint-targets }}
 
   mypy:
     runs-on: ubuntu-latest
