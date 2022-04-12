@@ -19,7 +19,7 @@ jobs:
         run: poetry run isort --check --diff .
 
       - name: Code style (black)
-        run: poetry run black --check .
+        run: poetry run black --check --diff .
 
       - name: Semantic checks (flake8)
         run: poetry run flake8
