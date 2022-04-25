@@ -35,7 +35,7 @@ jobs:
         uses: matrix-org/setup-python-poetry@v1
 
       - name: Restore/persist mypy's cache
-        uses: AustinScola/mypy-cache-github-action@v1
+        uses: AustinScola/mypy-cache-github-action@df56268388422ee282636ee2c7a9cc55ec644a41
 
       - name: Run mypy
         run: poetry run mypy
