@@ -1,6 +1,18 @@
 name: Linting
 on:
   workflow_call:
+    inputs:
+      typechecking-extras:
+        description: >
+          Space-separated list of package extras to install when type checking.
+          (I.e. the entries in `pyproject.toml`'s `[tool.poetry.extras]` section.)
+          Defaults to no extras.
+        # In the future I'd like to change setup-python-poetry to install all extras
+        # by default, using e.g. an implementation of
+        # https://github.com/python-poetry/poetry/issues/3413
+        type: string
+        required: false
+        default: ""
 
 
 jobs:
@@ -33,9 +45,12 @@ jobs:
 
       - name: Setup Poetry
         uses: matrix-org/setup-python-poetry@v1
+        with:
+          # We want to make use of type hints in optional dependencies too.
+          extras: "${{ inputs.typechecking-extras }}"
 
       - name: Restore/persist mypy's cache
-        uses: AustinScola/mypy-cache-github-action@v1
+        uses: AustinScola/mypy-cache-github-action@df56268388422ee282636ee2c7a9cc55ec644a41
 
       - name: Run mypy
         run: poetry run mypy
