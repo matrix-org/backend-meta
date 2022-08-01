@@ -46,5 +46,6 @@ jobs:
               return;
             }
 
-            core.setFailed('No sign off found. Please ensure you have signed off following the advice in https://matrix-org.github.io/synapse/latest/development/contributing_guide.html#sign-off.')
+            core.setFailed('No sign off found. Please ensure you have signed off following the advice in https://matrix-org.github.io/synapse/latest/development/contributing_guide.html#sign-off .')
+            core.notice('Ensure you have matched the format `Signed-off-by: Your Name <your@email.example.org>`')
             core.notice('If you have signed off privately instead (following the steps in Private Sign off), you can ignore this test.')
