@@ -24,6 +24,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Setup Poetry
+        uses: matrix-org/setup-python-poetry@v1
+
       - name: Locate cache directories
         id: locate-caches
         run: |
@@ -34,9 +37,6 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.locate-caches.outputs.black-cache-dir }}
-
-      - name: Setup Poetry
-        uses: matrix-org/setup-python-poetry@v1
 
       - name: Import order (isort)
         run: poetry run isort --check --diff .
