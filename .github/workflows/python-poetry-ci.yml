@@ -37,6 +37,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.locate-caches.outputs.black-cache-dir }}
+          # TODO: add branch names as a suffix to the key; add suffixless restore-key
+          key: black-cache-dir
 
       - name: Import order (isort)
         run: poetry run isort --check --diff .
