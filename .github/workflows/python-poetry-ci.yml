@@ -31,7 +31,7 @@ jobs:
         id: locate-caches
         run: |
           echo -n "::set-output name=black-cache-dir::"
-          python -c 'import black; print(black.cache.get_cache_dir())'
+          poetry run python -c 'import black; print(black.cache.get_cache_dir())'
 
       - name: Restore black cache dir
         uses: actions/cache@v3
