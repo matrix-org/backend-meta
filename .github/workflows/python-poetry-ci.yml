@@ -30,6 +30,7 @@ jobs:
       - name: Locate cache directories
         id: locate-caches
         run: |
+          poetry run python -c 'import black; print(black.cache.get_cache_dir())'
           echo -n "::set-output name=black-cache-dir::"
           poetry run python -c 'import black; print(black.cache.get_cache_dir())'
 
