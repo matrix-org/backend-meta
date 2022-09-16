@@ -45,7 +45,10 @@ jobs:
         run: poetry run isort --check --diff .
 
       - name: Code style (black)
-        run: poetry run black --check --diff .
+        # We omit --diff here, because otherwise black won't keep a cache of which
+        # files it's already checked to be correctly formatted. See
+        # https://github.com/psf/black/issues/1145
+        run: poetry run black --check .
 
       - name: Semantic checks (flake8)
         run: poetry run flake8
