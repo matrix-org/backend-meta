@@ -12,9 +12,10 @@ on:
         required: true
         type: string
     secrets:
-      GITHUB_TOKEN:
+      github_access_token:
         description: 'The bot token for authenticating the request'
         required: false
+
 jobs:
   add_new_issues:
     name: Add new issues to the triage board
@@ -35,4 +36,4 @@ jobs:
           projectid: ${{ inputs.project_id }}
           contentid: ${{ inputs.content_id }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github_access_token }}
