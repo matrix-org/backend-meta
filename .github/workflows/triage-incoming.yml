@@ -22,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: octokit/graphql-action@v2.x
-        id: add_to_project
         with:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
+          token: ${{ secrets.github_access_token }}
           query: |
               mutation add_to_project($projectid:ID!,$contentid:ID!) {
                 addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
@@ -35,5 +35,3 @@ jobs:
               }
           projectid: ${{ inputs.project_id }}
           contentid: ${{ inputs.content_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_access_token }}
