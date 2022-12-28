@@ -34,7 +34,8 @@ jobs:
         run: poetry run black --check --diff .
 
       - name: Semantic checks (ruff)
-        run: poetry run ruff .
+        # --quiet suppresses the update check.
+        run: poetry run ruff --quiet .
 
   mypy:
     runs-on: ubuntu-latest
