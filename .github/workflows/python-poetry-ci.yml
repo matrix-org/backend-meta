@@ -35,7 +35,9 @@ jobs:
 
       - name: Semantic checks (ruff)
         # --quiet suppresses the update check.
-        run: poetry run ruff --quiet .
+        # --format github turns ruff's diagnostics into annotations, so they show up
+        # nicely on diffs in Github's web UI
+        run: poetry run ruff --quiet --format github .
 
   mypy:
     runs-on: ubuntu-latest
