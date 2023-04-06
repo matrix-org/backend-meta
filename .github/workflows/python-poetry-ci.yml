@@ -56,5 +56,8 @@ jobs:
       - name: Restore/persist mypy's cache
         uses: AustinScola/mypy-cache-github-action@df56268388422ee282636ee2c7a9cc55ec644a41
 
+      - name: DEBUG
+        run: ls -alh
+
       - name: Run mypy
         run: poetry run mypy
