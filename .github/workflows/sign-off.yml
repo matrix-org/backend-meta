@@ -24,7 +24,7 @@ jobs:
             }
 
             // This regex is intentionally left lenient.
-            const signOffRegex = /signed[_\- ]off[_\- ]by: [\w ]+ <.+(@|at).+>/i;
+            const signOffRegex = /signed[_\- ]off[_\- ]by: [\S ]+ <?.+(@|at).+>?/i;
 
             if (signOffRegex.test(context.payload.pull_request.body ?? "")) {
               core.notice('Pull request body contains a sign-off notice');
